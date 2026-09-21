@@ -1,15 +1,282 @@
-select, option, th, td{
-    text-align-last: center;
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+    background-color: #0b1628;
+    color: #c8d6e5;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 14px;
+}
+
+/* ── Layout ── */
+.app-shell {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    padding: 12px 20px;
+    gap: 10px;
+}
+
+.top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+}
+.top-bar h1 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #e2e8f0;
+    letter-spacing: 0.5px;
+}
+
+.controls-row {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.controls-row select,
+.controls-row input[type="text"] {
+    flex: 1;
+    padding: 6px 10px;
+    background: #131e33;
+    color: #c8d6e5;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.25s, background 0.25s;
+}
+.controls-row select:hover,
+.controls-row input[type="text"]:hover {
+    border-color: #2a4a7f;
+}
+.controls-row select:focus,
+.controls-row input[type="text"]:focus {
+    border-color: #4a80c8;
+    background: #172640;
+}
+
+/* ── Configuration grid ── */
+.config-panel {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    background: #0f1b2e;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    transition: border-color 0.3s;
+    overflow: hidden;
+}
+.config-panel:hover {
+    border-color: #1e3a5f;
+}
+
+/* Row labels on left, then one column per wheel */
+.config-grid {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    /* First column is the row-label column; the rest are set dynamically via inline style */
+    gap: 0;
+}
+
+.grid-corner {
+    /* top-left blank cell */
+}
+
+.grid-header {
     text-align: center;
-    font: "Brush Script MT", "Lucida Handwriting", Cursive;
-    font-family: "Brush Script MT", "Lucida Handwriting", Cursive;
+    font-weight: 600;
+    font-size: 12px;
+    color: #7b92aa;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 6px 0;
+    border-bottom: 1px solid #1a2d4a;
 }
-::-webkit-input-placeholder {
-text-align: center;
+
+.grid-row-label {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 10px;
+    font-weight: 600;
+    font-size: 12px;
+    color: #7b92aa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-right: 1px solid #1a2d4a;
 }
-:-moz-placeholder {
-text-align: center;
+
+/* ── Scroll-snap carousel ── */
+.scroll-carousel {
+    height: 100%;
+    min-height: 0;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    background: transparent;
+    position: relative;
 }
-.settings{
-    width: 5;
+.scroll-carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.sc-pad {
+    /* These are set dynamically to half the container height so the first/last item can center */
+}
+
+.sc-item {
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    scroll-snap-align: center;
+    cursor: pointer;
+    user-select: none;
+    font-size: 13px;
+    color: #5a7399;
+    transition: color 0.15s, background 0.15s;
+    border-radius: 4px;
+    margin: 0 4px;
+}
+.sc-item:hover {
+    background: rgba(74, 128, 200, 0.08);
+    color: #8ab4f8;
+}
+.sc-item.active {
+    color: #8ab4f8;
+    font-weight: 700;
+    background: rgba(74, 128, 200, 0.12);
+}
+
+/* ── Text areas ── */
+.text-row {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+    height: 22vh;
+    min-height: 90px;
+}
+.text-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.text-col label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #7b92aa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.text-col textarea {
+    flex: 1;
+    resize: none;
+    padding: 8px 10px;
+    background: #131e33;
+    color: #c8d6e5;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.25s;
+}
+.text-col textarea:hover {
+    border-color: #2a4a7f;
+}
+.text-col textarea:focus {
+    border-color: #4a80c8;
+}
+.text-col textarea::placeholder {
+    color: #3d5a80;
+}
+
+/* ── Buttons ── */
+.btn-share {
+    padding: 5px 14px;
+    font-size: 12px;
+    font-family: inherit;
+    font-weight: 600;
+    color: #8ab4f8;
+    background: transparent;
+    border: 1px solid #2a4a7f;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+.btn-share:hover {
+    background: rgba(74, 128, 200, 0.1);
+    border-color: #4a80c8;
+}
+
+/* Plugboard validation */
+.plugboard-wrap {
+    flex: 1;
+    position: relative;
+}
+.plugboard-wrap input[type="text"] {
+    width: 100%;
+    padding: 6px 10px;
+    background: #131e33;
+    color: #c8d6e5;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.25s, background 0.25s;
+}
+.plugboard-wrap input[type="text"]:hover {
+    border-color: #2a4a7f;
+}
+.plugboard-wrap input[type="text"]:focus {
+    border-color: #4a80c8;
+    background: #172640;
+}
+
+/* Error state (invalid input) */
+.plugboard-error input[type="text"] {
+    border-color: #e53e3e !important;
+}
+.plugboard-error .plugboard-msg {
+    background: #1c1015;
+    color: #fc8181;
+    border: 1px solid #e53e3e;
+}
+
+/* Warning state (valid but non-historical) */
+.plugboard-warning input[type="text"] {
+    border-color: #dd6b20 !important;
+}
+.plugboard-warning .plugboard-msg {
+    background: #1c1810;
+    color: #fbd38d;
+    border: 1px solid #dd6b20;
+}
+
+.plugboard-msg {
+    display: block;
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    z-index: 50;
+    padding: 5px 10px;
+    font-size: 11px;
+    line-height: 1.3;
+    border-radius: 6px;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
 }

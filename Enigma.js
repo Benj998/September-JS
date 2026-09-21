@@ -1,5 +1,5 @@
 class Enigma {
-    static machines = machines;
+    static machines = {};
     #settings = {};
     #initialSettings;
     #charCount = 0;
@@ -220,7 +220,7 @@ class Enigma {
             this.#charCount++;
             let debug_arr = [out];
             let ret_str = out.output;
-            if (this.#settings.mode !== "include" && this.#charCount % 4 === 0) {
+            if (this.#settings.mode !== "include" && this.#charCount % 5 === 0) {
                 ret_str += " ";
                 debug_arr.push({str: " ", debug:[{alpha:0, input: "", output:" "}]});
             }

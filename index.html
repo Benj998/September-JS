@@ -1,47 +1,17 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html>
-    <header>
-        <!-- bootstrap and jquery -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
-        <script type="text/javascript" src="machines.json"></script>
-        <script src="Enigma.js"></script>
-        <script src="script.js"></script>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Enigma Machine</title>
+        <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+        <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+        <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
         <link rel="stylesheet" href="style.css">
-    </header>
+    </head>
     <body>
-        <div id="page" class="container main">
-            <form id="form">
-                    <div id="modelDiv" class="row text-center">
-                        <select name="model" id="model" onchange="modelChange()">
-                            <option disabled hidden selected>Select Model</option>
-                        </select>
-                    </div>
-                    <div id="inputSettings" class="row align-items-center text-center" hidden>
-                        <div class="col-sm">
-                            <select name="ukw" id="ukw"></select>
-                        </div>
-                        <div class="col-sm">
-                            <select name="mode" id="mode">
-                                <option value="include" selected>Include foreign characters</option>
-                                <option value="ignore">Ignore foreign characters</option>
-                            </select>
-                        </div>
-                        <div class="col-sm">
-                            <input type="text" name="switches" id="switches" placeholder="Switchboard Settings (XX XX XX...)">   
-                        </div>
-                    </div>
-                    <div class="row">
-                        <table id="table" class="table"></table>
-                    </div>
-                    <div id="output" class="row" hidden>
-                        <textarea oninput="inputChange()" name="inputText" id="inputText" placeholder="Enter text to be encoded/decoded"></textarea>
-                        <br><br><br><br><br>
-                        <textarea id="outputBox" placeholder="Ouput will be here" rows="5" cols="30"></textarea>
-                    </div>
-            </form>
-        </div>
+        <div id="root"></div>
+        <script src="Enigma.js"></script>
+        <script type="text/babel" src="script.js"></script>
     </body>
 </html>
