@@ -1,4 +1,4 @@
-# September JS
+# Enigma
  - Started as just a JS port of my original commandline simulater in CPP
  - Improved it to support many more Enigma machines, as well as being extendable to a custom engima design (e.g. modifying wirings in wheels, whether or not there is a greek wheel or  switchboard, whether or not the UKW can be set to different positions and ring settings etc.). Look at machines.json for examples.
 - Supports 
