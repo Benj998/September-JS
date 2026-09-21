@@ -5,7 +5,7 @@ $(document).ready(_ => {
         $("<option value='" + e + "'>" + e + "</option>").appendTo(modelSelect);
 });
 
-modelChange = _ => {
+const modelChange = _ => {
     const defaultRotors = ["Beta", "I", "II", "III"];
     let model = $("#model")[0].value, table = $("#table")[0], ukw = $("#ukw");
     $("#output")[0].hidden = false;
@@ -109,19 +109,22 @@ modelChange = _ => {
         select.appendTo(cell);
         cell.appendTo(row);
     }
-    $("#form").change(encode(1));
+    $("#form").off("change").on("change", (e) => {
+        if (e.target.id !== "inputText" && e.target.id !== "model") encode(true);
+    });
+    encode(true);
 }
 
-inputChange = _ => {
+const inputChange = _ => {
     let newInput = $("#inputText").val();
     if (newInput.length==prevInput.length+1 && newInput.slice(0,-1)==prevInput)
-        encode(0);
+        encode(false);
     else
-        encode(1);
+        encode(true);
     prevInput = newInput;
 }
 
-encode = hasChanged => {
+const encode = hasChanged => {
     var output;
     if (hasChanged) {
         let data = new FormData($("#form")[0]);

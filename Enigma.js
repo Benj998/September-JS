@@ -2,6 +2,7 @@ class Enigma {
     static machines = machines;
     #settings = {};
     #initialSettings;
+    #charCount = 0;
     constructor(params) {
         this.settings = params;
     }
@@ -31,6 +32,7 @@ class Enigma {
     // Just resets the machine to its intial settings before any typing moved it
     reset() {
         this.#settings = this.#initialSettings;
+        this.#charCount = 0;
     }
 
     
@@ -114,6 +116,7 @@ class Enigma {
         }
         this.#settings.etw = Enigma.machines[this.#settings.model].etw;
         this.#initialSettings = this.#settings;
+        this.#charCount = 0;
     }
 
     // Rotates the last wheels 1 place, then accounts for any turnovers that may have happened
@@ -172,25 +175,30 @@ class Enigma {
             let out_str = "", out_debug = [];
             if (this.#settings.mode=="include") {
                 for (let c of str) {
-                    let res = c.toUpperCase()!=c.toLowerCase() ? this.type(c) : {str: c, debug:[{alpha: 0, input: c, output: c}]};
+                    let res = this.type(c);
                     out_str += res.str;
-                    out_debug.push(res.debug[0]);
+                    out_debug.push(...res.debug);
                 }
             }
             else {
-                let i=0;
                 for (let c of str) {
-                    if (c.toUpperCase()!=c.toLowerCase()) {
-                        let res = this.type(c);
-                        out_str += res.str + (++i%4 ? "" : " ");
-                        out_debug.push(res.debug[0]);
-                        if (i%4==0) out_debug.push({str: " ", debug:[{alpha:0, input: "", output:" "}]});
+                    let res = this.type(c);
+                    if (res.str !== "") {
+                        out_str += res.str;
+                        out_debug.push(...res.debug);
                     }
                 }
             }
             return {str: out_str, debug: out_debug};
         }
         else {
+            if (str.toUpperCase() == str.toLowerCase()) {
+                if (this.#settings.mode == "include") {
+                    return {str: str, debug: [{alpha: 0, input: str, output: str}]};
+                } else {
+                    return {str: "", debug: []};
+                }
+            }
             let out = {alpha: 1, switch: {}, rotors:{forward:{}, backward:{}}, etw: {}};
             out.settings = JSON.parse(JSON.stringify(this.#rotate()));
             let n = this.#toInt(str);                   out.input = str;
@@ -208,7 +216,15 @@ class Enigma {
             n = this.#etwOut(n);                        out.etw.out = this.#toChar(n);
             n = this.#switchBoard(n);                   out.switch.B = this.#toChar(n);
             out.output = this.#toChar(n);
-            return {str: out.output, debug: [out]};
+
+            this.#charCount++;
+            let debug_arr = [out];
+            let ret_str = out.output;
+            if (this.#settings.mode !== "include" && this.#charCount % 4 === 0) {
+                ret_str += " ";
+                debug_arr.push({str: " ", debug:[{alpha:0, input: "", output:" "}]});
+            }
+            return {str: ret_str, debug: debug_arr};
         }
     }
 }
